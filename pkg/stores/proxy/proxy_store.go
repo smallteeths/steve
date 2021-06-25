@@ -276,6 +276,8 @@ func returnErr(err error, c chan types.APIEvent) {
 
 func (s *Store) listAndWatch(apiOp *types.APIRequest, k8sClient dynamic.ResourceInterface, schema *types.APISchema, w types.WatchRequest, result chan types.APIEvent) {
 	rev := w.Revision
+
+	logrus.Infof("eeeeeeeeee %++v", apiOp.Schema)
 	if rev == "-1" {
 		rev = ""
 	} else {
