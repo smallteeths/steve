@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"context"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"sort"
 	"strconv"
@@ -178,6 +179,7 @@ func (r *RBACStore) list(apiOp *types.APIRequest, schema *types.APISchema, parti
 func (r *RBACStore) Watch(apiOp *types.APIRequest, schema *types.APISchema, w types.WatchRequest) (chan types.APIEvent, error) {
 	partitions, passthrough := isPassthrough(apiOp, schema, "watch")
 	if passthrough {
+		logrus.Infof("aaaaaaaaaaaa %++v", passthrough)
 		return r.Store.Watch(apiOp, schema, w)
 	}
 
@@ -190,8 +192,6 @@ func (r *RBACStore) Watch(apiOp *types.APIRequest, schema *types.APISchema, w ty
 	for _, partition := range partitions {
 		partition := partition
 		eg.Go(func() error {
-			defer cancel()
-
 			var (
 				c   chan types.APIEvent
 				err error
@@ -218,6 +218,7 @@ func (r *RBACStore) Watch(apiOp *types.APIRequest, schema *types.APISchema, w ty
 		defer close(response)
 		<-ctx.Done()
 		eg.Wait()
+		cancel()
 	}()
 
 	return response, nil
