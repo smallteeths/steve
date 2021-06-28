@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"sync"
 
 	"github.com/gorilla/websocket"
@@ -59,6 +60,8 @@ func (s *WatchSession) stream(ctx context.Context, resourceType, revision string
 		return fmt.Errorf("schema %s does not support watching", resourceType)
 	}
 
+	logrus.Infof("s.apiOp.Schema fffffac %++v", s.apiOp.Schemas)
+	logrus.Infof("s.apiOp.Query dddddddec %++v", s.apiOp.Query)
 	if err := s.apiOp.AccessControl.CanWatch(s.apiOp, schema); err != nil {
 		return err
 	}

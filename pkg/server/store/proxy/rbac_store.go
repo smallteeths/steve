@@ -184,13 +184,13 @@ func (r *RBACStore) Watch(apiOp *types.APIRequest, schema *types.APISchema, w ty
 	}
 
 	ctx, cancel := context.WithCancel(apiOp.Context())
-	defer cancel()
 	apiOp = apiOp.WithContext(ctx)
 
 	eg := errgroup.Group{}
 	response := make(chan types.APIEvent)
 	for _, partition := range partitions {
 		partition := partition
+		logrus.Infof("partition eeeeeeee %++v", passthrough)
 		eg.Go(func() error {
 			var (
 				c   chan types.APIEvent
