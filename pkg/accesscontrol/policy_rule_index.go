@@ -1,6 +1,7 @@
 package accesscontrol
 
 import (
+	"github.com/sirupsen/logrus"
 	"hash"
 	"sort"
 
@@ -100,6 +101,9 @@ func (p *policyRuleIndex) get(subjectName string) *AccessSet {
 	for _, binding := range p.getClusterRoleBindings(subjectName) {
 		p.addAccess(result, All, binding.RoleRef)
 	}
+
+	logrus.Infof("accesscontroler Id 11111111111: %++v", result.ID)
+	logrus.Infof("accesscontroler set 11111111111: %++v", result.set)
 
 	return result
 }
